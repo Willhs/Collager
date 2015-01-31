@@ -1,3 +1,4 @@
+package collager;
 
 
 import java.awt.Color;

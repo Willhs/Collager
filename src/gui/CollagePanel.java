@@ -1,3 +1,4 @@
+package gui;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -24,7 +25,7 @@ public class CollagePanel extends JPanel{
 			g.drawImage(evolvedImage, goalImage.getWidth(), 0, evolvedImage.getWidth(), evolvedImage.getHeight(), null);
 		}
 		else {
-			g.drawString("No image / image is null", WIDTH/2 - 20, HEIGHT/2);
+			g.drawString("image is null", WIDTH/2 - 20, HEIGHT/2);
 		}
 	}
 

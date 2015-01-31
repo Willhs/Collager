@@ -1,8 +1,11 @@
+package collager;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
+
+import evolver.AbstractEvolver;
 
 
 /**
@@ -10,14 +13,16 @@ import java.util.Set;
  *
  * Collages scrap images to try to make up the goal image
  */
-public class Collager {
+public class Collager extends AbstractEvolver{
 
 	private Set<Scrap> scraps;
 	private BufferedImage goal;
 	private int stickiness = 4; // how sticky the scraps are when evolving
 	private int jumpiness = 50; // how jumpy the scraps can be
-
-	public Collager(Set<BufferedImage> scrapImages, BufferedImage goal, int totalScraps ) {
+	private int evolveDelay = 20;
+	
+	public Collager(Set<BufferedImage> scrapImages, BufferedImage goal, int totalScraps) {
+		super(); // will happen anyway?
 		this.scraps = new HashSet<Scrap>();
 		int copies = (int)Math.ceil(totalScraps/scrapImages.size());
 		
@@ -30,11 +35,22 @@ public class Collager {
 		this.goal = goal;
 	}
 
-
+	public void evolve(){
+		while (keepEvolving()){
+			evolveGeneration();
+			fireOnEvolve(); 
+			try {
+				Thread.sleep(evolveDelay );
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	/**
 	 * Evolves the scraps towards the goal image
 	 */
-	public void evolve() {
+	public void evolveGeneration() {
 		for (Scrap scrap : scraps){
 			double fitnessValue = scrap.evaluateFitness(goal);
 			//System.out.println("fitness value: " + fitnessValue);
@@ -67,5 +83,13 @@ public class Collager {
 	
 	public void setJumpiness(int jumpiness){
 		this.jumpiness = jumpiness;
+	}
+
+
+	/**
+	 * @param gps: generations per second
+	 */
+	public void setSpeed(int gps) {
+		evolveDelay = 1000/gps;
 	}
 }

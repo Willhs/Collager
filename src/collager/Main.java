@@ -1,3 +1,6 @@
+package collager;
+import gui.GUI;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -62,23 +65,16 @@ public class Main {
 		}		
 		
 		// ----- IMPORTANT STUFF ------
-		
+				
 		Collager collager = new Collager(scrapImages, goalImage, totalScraps);
 		
 		// GUI
 		GUI gui = new GUI(goalImage, collager);
 		
+		collager.addEvolveListener(gui);
+		
 		// Keep evolving and displaying current evolution
-		while (collager.keepEvolving()){
-			collager.evolve();
-			gui.setImage(collager.getCurrentEvolution());
-			gui.repaint();
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		collager.evolve();
 	}	
 	
 	public static int[] requestOptions(){
